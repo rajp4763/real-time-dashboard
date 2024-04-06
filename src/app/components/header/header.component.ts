@@ -1,4 +1,3 @@
-// header.component.ts
 import { Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 @Component({

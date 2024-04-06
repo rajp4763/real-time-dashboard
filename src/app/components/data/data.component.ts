@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { WebSocketService } from '../../services/data.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-data',
   standalone: true,
-  imports: [MatTableModule],
+  imports: [MatTableModule, CommonModule],
   templateUrl: './data.component.html',
   styleUrl: './data.component.scss',
 })
