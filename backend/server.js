@@ -134,13 +134,54 @@ server.use(/^(?!\/auth).*$/, (req, res, next) => {
 
 server.use(router);
 
-server.listen(8000, () => {
+const wss = new WebSocket.Server({ noServer: true });
+wss.on("connection", (ws) => {
+  console.log("WebSocket connection established.");
+
+  // If no data is available
+  if (users.length === 0) {
+    generateInitialUserData();
+  }
+  try {
+    ws.send(JSON.stringify(users));
+  } catch (err) {
+    console.error("Error sending initial user data:", err);
+    ws.terminate();
+  }
+
+  ws.on("error", function error(err) {
+    console.error("WebSocket error:", err);
+  });
+
+  // update random data in every 1 second
+  let intervalId;
+  try {
+    intervalId = setInterval(() => {
+      updateRandomUserPercentage();
+      ws.send(JSON.stringify(users)); // Send updated data
+    }, 1000);
+  } catch (err) {
+    console.error("Error updating user data:", err);
+    clearInterval(intervalId);
+  }
+
+  ws.on("close", function close() {
+    console.log("WebSocket connection closed.");
+    clearInterval(intervalId); // Clear interval if it exists
+  });
+});
+
+const httpServer = server.listen(8000, () => {
   console.log("Run Auth API Server");
 });
 
+// Attach WebSocket server to the HTTP server
+httpServer.on("upgrade", (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, (socket) => {
+    wss.emit("connection", socket, request);
+  });
+});
 
-
-const wss = new WebSocket.Server({ port: 8080 });
 // Array to store user data
 const users = [];
 // generate random 50 users data
@@ -168,25 +209,3 @@ function sendUpdatedUserData() {
     }
   });
 }
-wss.on("connection", function connection(ws) {
-  console.log("WebSocket connection established.");
-  // Generate initial user data only if it's not already generated
-  if (users.length === 0) {
-    generateInitialUserData();
-  }
-  // Send initial user data to the client
-  ws.send(JSON.stringify(users));
-  // Error event handler
-  ws.on("error", function error(err) {
-    console.error("WebSocket error Faijan:", err);
-  });
-  // Update percentage for a random user every secod
-  const interval = setInterval(() => {
-    updateRandomUserPercentage();
-    sendUpdatedUserData();
-  }, 1000);
-  ws.on("close", function close() {
-    console.log("WebSocket connection closed.");
-    clearInterval(interval);
-  });
-});
