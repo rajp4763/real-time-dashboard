@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class DataComponent {
   data: any[] = []; // Array to store received data
-  displayedColumns = ['column1', 'column2', 'column3']; // Define table columns
+  displayedColumns = ['id', 'name', 'percentage']; // Define table columns
   previousData: any[] = []; // Store previous data
 
   constructor(private dataService: WebSocketService) {}
@@ -28,14 +28,19 @@ export class DataComponent {
   checkForChanges() {
     for (let i = 0; i < this.data.length; i++) {
       for (let j = 0; j < this.displayedColumns.length; j++) {
-        if (
-          this.data[i][this.displayedColumns[j]] !==
-          this.previousData[i][this.displayedColumns[j]]
-        ) {
+        const previousValue = this.previousData[i]?.[this.displayedColumns[j]]; // Handle undefined previous data
+        const currentValue = this.data[i][this.displayedColumns[j]];
+
+        if (previousValue !== currentValue) {
           // Element has changed
-          const cellElement = document.getElementById(`cell-${i}-${j}`); // Get cell element reference (improve this for performance)
+          const cellElement = document.getElementById(`cell-${i}-${j}`);
           if (cellElement) {
             cellElement.classList.add('changed-data'); // Add CSS class for highlighting
+          }
+        } else {
+          const cellElement = document.getElementById(`cell-${i}-${j}`);
+          if (cellElement) {
+            cellElement.classList.remove('changed-data'); // Remove class if no change
           }
         }
       }

@@ -12,7 +12,7 @@ interface LoginResponse {
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8000'; // Replace with your server URL
-  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  private isLoggedInSubject = new BehaviorSubject<boolean>(true);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
   public redirectUrl = '';
 
