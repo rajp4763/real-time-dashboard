@@ -1,0 +1,26 @@
+<mat-toolbar>
+  <div class="example-button-row">
+    <a
+      mat-button
+      color="accent"
+      routerLink="/"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      href="/data"
+    >
+      Data
+    </a>
+    <a
+      href="/about"
+      mat-button
+      color="accent"
+      routerLink="/about"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+    >
+      About
+    </a>
+  </div>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
