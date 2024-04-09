@@ -1,18 +1,12 @@
-<mat-table [dataSource]="data" class="mat-elevation-z8">
+<mat-table [dataSource]="data" class="mat-elevation-z8" style="overflow: auto;">
   <!-- Position Column -->
-  <ng-container
-    matColumnDef="{{ column }}"
-    *ngFor="let column of displayedColumns"
-  >
+  <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedColumns">
     <mat-header-cell *matHeaderCellDef> {{ column }} </mat-header-cell>
-    <mat-cell
-      id="cell-{{ i }}-{{ j }}"
-      *matCellDef="let row; let i = index; let j = column"
-    >
+    <mat-cell *matCellDef="let row; let i = index; let j = column" [ngStyle]="{'background-color': row.color === 'green' ? 'green' : 'transparent'}">
       {{ row[column] }}
     </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'changed-row': isChanged(row)}"></mat-row>
 </mat-table>

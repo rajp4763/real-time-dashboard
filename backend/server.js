@@ -186,7 +186,7 @@ httpServer.on("upgrade", (request, socket, head) => {
 const users = [];
 // generate random 50 users data
 function generateInitialUserData() {
-  for (let i = 1; i <= 50; i++) {
+  for (let i = 1; i <= 5; i++) {
     const user = {
       id: i,
       name: `User ${i}`,

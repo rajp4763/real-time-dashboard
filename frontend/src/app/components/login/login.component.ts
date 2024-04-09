@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,16 +25,18 @@ export class LoginComponent {
   password = '';
   hide = true;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  // onSubmit() {
-  //   this.authService.login(this.username, this.password).subscribe(
-  //     () => {
-  //       /* Navigate to data section on successful login */
-  //     },
-  //     (error) => {
-  //       /* Handle login errors */
-  //     }
-  //   );
-  // }
+  onSubmit() {
+    console.log('onSubmit getting fired.')
+    this.authService.login(this.username, this.password).subscribe(
+      () => {
+        /* Navigate to data section on successful login */
+        this.router.navigate(['/data']); 
+      },
+      (error) => {
+        /* Handle login errors */
+      }
+    );
+  }
 }

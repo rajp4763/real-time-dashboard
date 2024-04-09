@@ -14,6 +14,7 @@ export class DataComponent {
   data: any[] = []; // Array to store received data
   displayedColumns = ['id', 'name', 'percentage']; // Define table columns
   previousData: any[] = []; // Store previous data
+  changedIndices: number[] = []; // Store indices of changed rows
 
   constructor(private dataService: WebSocketService) {}
 
@@ -21,29 +22,31 @@ export class DataComponent {
     this.dataService.dataSubject.subscribe((data) => {
       this.previousData = this.data; // Update previous data
       this.data = data; // Update current data
-      this.checkForChanges(); // Call function to check for changes
-    });
+      this.checkForChanges(this.previousData, this.data); // Call function to check for changes
+    }); 
   }
 
-  checkForChanges() {
-    for (let i = 0; i < this.data.length; i++) {
-      for (let j = 0; j < this.displayedColumns.length; j++) {
-        const previousValue = this.previousData[i]?.[this.displayedColumns[j]]; // Handle undefined previous data
-        const currentValue = this.data[i][this.displayedColumns[j]];
+  checkForChanges(prevData:any, currentData:any) {
+    const changedPercentage:any = []
+    const prevDataObject:any = {}
+    const previousDataMap = prevData.map((item:any) => {prevDataObject[item.id] = item.percentage})
+    console.log('previous data map is : ', JSON.stringify(prevDataObject))
 
-        if (previousValue !== currentValue) {
-          // Element has changed
-          const cellElement = document.getElementById(`cell-${i}-${j}`);
-          if (cellElement) {
-            cellElement.classList.add('changed-data'); // Add CSS class for highlighting
-          }
-        } else {
-          const cellElement = document.getElementById(`cell-${i}-${j}`);
-          if (cellElement) {
-            cellElement.classList.remove('changed-data'); // Remove class if no change
-          }
-        }
+    currentData.forEach((item:any) => {
+      const previousPercentage = prevDataObject[item.id]
+      if (previousPercentage !== undefined && previousPercentage !== item.percentage)  {
+        changedPercentage.push({...item,  color:"green", previousPercentage, percentage: item.percentage})
       }
-    }
+      else{
+        changedPercentage.push({...item})
+      }
+    });
+    this.data = changedPercentage
+    console.log('this data is', this.data)
+  }
+  
+
+  isChanged(index: number): boolean {
+    return this.changedIndices.includes(index);
   }
 }
