@@ -12,15 +12,15 @@ interface LoginResponse {
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8000'; // Replace with your server URL
-  private isLoggedInSubject = new BehaviorSubject<boolean>(true);
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
   public redirectUrl = '';
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<LoginResponse> {
+  login(email: string, password: string): Observable<LoginResponse> {
     return this.http
-      .post<LoginResponse>(`${this.baseUrl}/auth/login`, { username, password })
+      .post<LoginResponse>(`${this.baseUrl}/auth/login`, { email, password })
       .pipe(
         tap((response) => {
           localStorage.setItem('token', response.access_token);
@@ -32,9 +32,10 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     this.isLoggedInSubject.next(false);
+    console.log('removed token');
   }
 
   isAuthenticated(): boolean {
-    return this.isLoggedInSubject.getValue();
+    return localStorage.getItem('token') ? true : false;
   }
 }

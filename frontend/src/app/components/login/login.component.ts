@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -16,23 +17,24 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatButtonModule,
     MatInputModule,
+    FormsModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  username = '';
-  password = '';
-  hide = true;
+  email: string = '';
+  password: string = '';
+  hide: boolean = true;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    console.log('onSubmit getting fired.')
-    this.authService.login(this.username, this.password).subscribe(
+    console.log('onSubmit getting fired.', this.email, this.password);
+    this.authService.login(this.email, this.password).subscribe(
       () => {
         /* Navigate to data section on successful login */
-        this.router.navigate(['/data']); 
+        this.router.navigate(['/data']);
       },
       (error) => {
         /* Handle login errors */
