@@ -25,3 +25,18 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+## How to run frontend
+` open this code in desired editor  `
+` open termianl and navigate to the frontend folder `
+` run >> npm install --legacy-peer-deps `
+` run >> npm run start`
+
+
+## How to run backend
+` open this code in desired editor  `
+` open termianl and navigate to the backend folder `
+` run >> npm install --legacy-peer-deps `
+` run >> npm run start-auth`
+
