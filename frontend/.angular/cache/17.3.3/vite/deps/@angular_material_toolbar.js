@@ -1,7 +1,7 @@
 import {
   MatCommonModule,
   Platform
-} from "./chunk-QAXTWOMD.js";
+} from "./chunk-DBCGLHYU.js";
 import {
   DOCUMENT
 } from "./chunk-DGV72MND.js";
@@ -30,8 +30,8 @@ import {
   ɵɵprojectionDef,
   ɵɵqueryRefresh
 } from "./chunk-4RVK6YC4.js";
-import "./chunk-V2DXGMIT.js";
 import "./chunk-UKEHM6V6.js";
+import "./chunk-V2DXGMIT.js";
 import "./chunk-ZDOIMVJD.js";
 
 // node_modules/@angular/material/fesm2022/toolbar.mjs
